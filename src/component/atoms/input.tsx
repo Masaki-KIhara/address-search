@@ -1,18 +1,16 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { checkErrorMessage } from "../../constants/function/handler";
-import { AddressType } from "../../type/formValue";
+import { Props } from "../../type/formValue";
 
-type Props = {
-  name: keyof AddressType;
-  register: UseFormRegister<AddressType>;
-  errors: FieldErrors<AddressType>;
-};
-
-export const Input = ({ name, register, errors }: Props) => {
+export const Input = ({
+  name,
+  register,
+  errors,
+  rules,
+}: Omit<Props, "labelText">) => {
   return (
     <div className="grid">
       <input
-        {...register(name, { required: true })}
+        {...register(name, rules)}
         name={name}
         className={`border rounded pl-[5px] ${
           errors[name]?.type && "border-[#dc2626]"

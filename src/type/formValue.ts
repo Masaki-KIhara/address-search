@@ -1,3 +1,10 @@
+import {
+  FieldErrors,
+  FieldValues,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
+
 export type AddressType = {
   postCode: string;
   prefecture: string;
@@ -26,4 +33,19 @@ export type AddressInformationType = {
 export type AddressListValueType = {
   label: string;
   name: "postCode" | "prefecture" | "municipalities";
+  rules: Omit<
+    RegisterOptions<FieldValues>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
 }[];
+
+export type Props = {
+  labelText: string;
+  name: keyof AddressType;
+  register: UseFormRegister<AddressType>;
+  errors: FieldErrors<AddressType>;
+  rules: Omit<
+    RegisterOptions<FieldValues>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
+};

@@ -35,6 +35,7 @@ function App() {
               labelText={item.label}
               name={item.name}
               errors={errors}
+              rules={item.rules}
             />
           );
         })}
