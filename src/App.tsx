@@ -1,48 +1,25 @@
 import { FormCategory } from "./component/molcule/formCategory";
-import { useForm, useWatch } from "react-hook-form";
-import {
-  AddressInformationType,
-  AddressType,
-  OmitPostCodeType,
-} from "./type/formValue";
-import { AddressValueList } from "./constants/addressValueList";
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { AddressType } from "./type/formValue";
+import { AddressValueList } from "./constants/list/addressValueList";
+import { useAddressSearch } from "./hooks/useAddressSearch";
 
 function App() {
-  const { control, register, handleSubmit, reset, setValue } =
-    useForm<AddressType>();
-  const [addressData, setAddressDate] = useState<OmitPostCodeType>({
-    prefecture: "",
-    municipalities: "",
-  });
-  const postCodeField = useWatch({ control: control, name: "postCode" });
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<AddressType>();
 
-  const addressSearch = (postCode: string) => {
-    fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postCode}`)
-      .then((res) => res.json())
-      .then((data: AddressInformationType) =>
-        data.results.forEach((item) =>
-          setAddressDate({
-            prefecture: item.address1,
-            municipalities: item.address2 + item.address3,
-          })
-        )
-      );
-  };
-
-  if (postCodeField && postCodeField.length === 7) {
-    addressSearch(postCodeField);
-  }
+  useAddressSearch({ control: control, setValue: setValue });
 
   const onSubmit = (data: AddressType) => {
     console.log(data);
     reset();
   };
-
-  useEffect(() => {
-    setValue("prefecture", addressData.prefecture);
-    setValue("municipalities", addressData.municipalities);
-  }, [addressData]);
 
   return (
     <>
@@ -57,6 +34,7 @@ function App() {
               register={register}
               labelText={item.label}
               name={item.name}
+              errors={errors}
             />
           );
         })}
