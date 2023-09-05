@@ -25,8 +25,10 @@ export const useAddressSearch = ({ control, setValue }: AddressSearchType) => {
     try {
       const addressData = await fetchAddressData(postCodeField);
       addressData.results.map((item) => {
-        setValue("prefecture", item.address1);
-        setValue("municipalities", item.address2 + item.address3);
+        setValue("prefecture", item.address1, { shouldValidate: true });
+        setValue("municipalities", item.address2 + item.address3, {
+          shouldValidate: true,
+        });
       });
     } catch (error) {
       alert(error);
