@@ -1,4 +1,4 @@
-import { AddressListValueType } from "../type/formValue";
+import { AddressListValueType } from "../../type/formValue";
 
 export const AddressValueList: AddressListValueType = [
   { label: "郵便番号", name: "postCode" },
